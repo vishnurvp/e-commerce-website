@@ -1,5 +1,6 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useContext} from "react";
 import classes from "./Store.module.css";
+import CartContext from "./Store/Cart-Context";
 import Button from "./UI/Button";
 
 const productsArr = [
@@ -29,26 +30,36 @@ const productsArr = [
     title: "Blue Color",
     price: 100,
     imageUrl: "https://prasadyash2411.github.io/ecom-website/img/Album%204.png",
+    quantity: 1,
   },
 ];
 
+
 const Store = (props) => {
+  const cartCtx = useContext(CartContext);
+
+  const addToCartClickHandler = (event) => {
+    const itemId = event.target.id
+    cartCtx.addItem(productsArr.filter((item)=>item.id === itemId)[0]);
+  }
+
   const itemList = productsArr.map((item) => {
     return (
       <li className={classes.product} key={item.id}>
         <h1>{item.title}</h1>
         <img src={item.imageUrl} alt={item.title}></img>
         <h2>{item.price}</h2>
-        <Button>Add To Cart</Button>
+        <Button id={item.id} onClick={addToCartClickHandler}>Add To Cart</Button>
       </li>
     );
   });
+
   return (
     <Fragment>
       <p className={classes.heading}>The Generics</p>
       <ul>{itemList}</ul>
       <div className={classes.seeCartBtn}>
-        <Button>see the cart</Button>
+        <Button onClick={props.onCartClick}>see the cart</Button>
       </div>
     </Fragment>
   );

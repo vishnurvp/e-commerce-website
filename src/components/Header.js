@@ -1,8 +1,10 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useContext } from "react";
 import Button from "./UI/Button";
 import classes from "./Header.module.css";
+import CartContext from "./Store/Cart-Context";
+
 const Header = (props) => {
-  
+  const cartCtx = useContext(CartContext);
   return (
     <Fragment>
       <div className={classes.banner}>
@@ -13,7 +15,7 @@ const Header = (props) => {
         </div>
         <div className={classes.cartCase}>
             <Button onClick={props.onCartClick}>Cart</Button>
-          <div className={classes.cartItemsNum}>0</div>
+          <div className={classes.cartItemsNum}>{cartCtx.items.length}</div>
         </div>
       </div>
     </Fragment>
