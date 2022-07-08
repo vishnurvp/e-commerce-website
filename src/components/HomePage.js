@@ -3,8 +3,10 @@ import classes from "./HomePage.module.css";
 
 const HomePage = () => {
   const [movies, setMovies] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   async function fetchMoviesHandler() {
+    setIsLoading(true);
     const response = await fetch("https://swapi.dev/api/films");
     const data = await response.json();
 
@@ -17,6 +19,7 @@ const HomePage = () => {
       };
     });
     setMovies(transformedData);
+    setIsLoading(false);
   }
 
   return (
@@ -49,7 +52,8 @@ const HomePage = () => {
       <div>
         <h1>Movies</h1>
         <button onClick={fetchMoviesHandler}>Get Movies</button>
-        <ul className={classes.list}>
+        {isLoading && <p>Loading...</p>}
+        {!isLoading && movies.length>0 && <ul className={classes.list}>
           {movies.map((movies) => (
             <li key={movies.id}>
               <h3>{movies.title}</h3>
@@ -57,8 +61,10 @@ const HomePage = () => {
               <h4>{movies.releaseDate}</h4>
             </li>
           ))}
-        </ul>
+        </ul>}
+        {!isLoading && movies.length===0 && <p>No Movies Found</p>}
       </div>
+
     </div>
   );
 };
