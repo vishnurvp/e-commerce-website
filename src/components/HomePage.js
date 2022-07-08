@@ -1,7 +1,27 @@
-import React from "react";
-import classes from './HomePage.module.css';
+import React, { useState } from "react";
+import classes from "./HomePage.module.css";
 
 const HomePage = () => {
+  const [movies, setMovies] = useState([]);
+
+  function fetchMoviesHandler() {
+    fetch("https://swapi.dev/api/films")
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        const transformedData = data.results.map((movie) => {
+          return {
+            id: movie.episode_id,
+            title: movie.title,
+            openingText: movie.opening_crawl,
+            releaseDate: movie.release_date,
+          };
+        });
+        setMovies(transformedData);
+      });
+  }
+
   return (
     <div>
       <div className={classes.headingDiv}>
@@ -27,6 +47,19 @@ const HomePage = () => {
           <li>
             event five <button>Buy Tickets</button>
           </li>
+        </ul>
+      </div>
+      <div>
+        <h1>Movies</h1>
+        <button onClick={fetchMoviesHandler}>Get Movies</button>
+        <ul className={classes.list}>
+          {movies.map((movies) => (
+            <li key={movies.id}>
+              <h3>{movies.title}</h3>
+              <h5>{movies.openingText}</h5>
+              <h4>{movies.releaseDate}</h4>
+            </li>
+          ))}
         </ul>
       </div>
     </div>
