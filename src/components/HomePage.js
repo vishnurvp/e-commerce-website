@@ -43,6 +43,10 @@ const HomePage = () => {
     return () => clearInterval(interval);
   }, [retry]);
 
+  useEffect(() => {
+    fetchMoviesHandler();
+  }, []);
+
   let content = <p>No Movies Found</p>;
   if (movies.length > 0) {
     content = (
