@@ -9,14 +9,14 @@ const productsArr = [
     title: "Colors",
     price: 100,
     imageUrl: "https://prasadyash2411.github.io/ecom-website/img/Album%201.png",
-    quantity: 2,
+    quantity: 1,
   },
   {
     id: 'p112',
     title: "Black and white Colors",
     price: 50,
     imageUrl: "https://prasadyash2411.github.io/ecom-website/img/Album%202.png",
-    quantity: 3,
+    quantity: 1,
   },
   {
     id: 'p113',

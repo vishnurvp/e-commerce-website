@@ -12,6 +12,7 @@
     display: flex;
     width: 80%;
     justify-content: space-evenly;
+    cursor: pointer;
 }
 
 .cartCase {
@@ -25,4 +26,9 @@
     font-size: 30px;
     font-weight: bold;
 }
+
+.active {
+    background-color: rgb(162, 245, 104);
+}
+
 

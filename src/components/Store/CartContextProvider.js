@@ -11,7 +11,9 @@ const CartContextProvider = (props) => {
       return false;
     });
     if (isThere) {
-      alert("Item is already in the cart");
+      item.quantity += 1;
+      setCartItems((olditems) => [...olditems.filter(el => el.id !== item.id), item]);
+      // alert("Item is already in the cart");
     } else {
       setCartItems((olditems) => [...olditems, item]);
     }
