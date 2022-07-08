@@ -20,6 +20,16 @@ const HomePage = () => {
     if (data) fetchMoviesHandler();
   };
 
+  const deleteMovieHandler = async (event) => {
+    const movieId = event.target.id;
+    const url = `https://react-http-f04a8-default-rtdb.firebaseio.com/movies/${movieId}.json`;
+    const response = await fetch(url, {
+      method: 'DELETE',
+    })
+    const data = await response.json();
+    if(!data) fetchMoviesHandler();
+  }
+
   const cancelRetryingHandler = () => {
     setRetry(false);
   };
@@ -81,9 +91,14 @@ const HomePage = () => {
       <ul className={classes.list}>
         {movies.map((movies) => (
           <li key={movies.id}>
+            <div>
             <h3>{movies.title}</h3>
             <h5>{movies.openingText}</h5>
             <h4>{movies.releaseDate}</h4>
+            </div>
+            <div>
+              <button id={movies.id} onClick={deleteMovieHandler}>Delete Movie</button>
+            </div>
           </li>
         ))}
       </ul>
