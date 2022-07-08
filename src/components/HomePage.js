@@ -1,29 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import classes from "./HomePage.module.css";
 
 const HomePage = () => {
   const [movies, setMovies] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [retry, setRetry] = useState(true);
+  const [retry, setRetry] = useState(false);
 
   const cancelRetryingHandler = () => {
     setRetry(false);
-  }
+  };
 
-  const retryFetch = () => {
-    return new Promise((res)=>setTimeout(res,5000))
-  }
-
-  async function fetchMoviesHandler() {
+  const fetchMoviesHandler = async () => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await fetch("https://swapi.dev/api/film");
-      if (!response.ok) {
-        throw new Error('Somethig went Wrong ... Retrying');
-      }
-
+      const response = await fetch("https://swapi.dev/api/films");
+      if (!response.ok) throw new Error("Somethig went Wrong ... Retrying");
       const data = await response.json();
 
       const transformedData = data.results.map((movie) => {
@@ -37,26 +30,35 @@ const HomePage = () => {
       setMovies(transformedData);
     } catch (error) {
       setError(error.message);
-      if (retry) retryFetch().then(fetchMoviesHandler);
+      setRetry(true);
     }
     setIsLoading(false);
-  }
+  };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      fetchMoviesHandler();
+    }, 5000);
+    if(!retry) {clearInterval(interval); return}
+    return () => clearInterval(interval);
+  }, [retry]);
 
   let content = <p>No Movies Found</p>;
-  if (movies.length>0) {
-    content = <ul className={classes.list}>
-    {movies.map((movies) => (
-      <li key={movies.id}>
-        <h3>{movies.title}</h3>
-        <h5>{movies.openingText}</h5>
-        <h4>{movies.releaseDate}</h4>
-      </li>
-    ))}
-  </ul>
+  if (movies.length > 0) {
+    content = (
+      <ul className={classes.list}>
+        {movies.map((movies) => (
+          <li key={movies.id}>
+            <h3>{movies.title}</h3>
+            <h5>{movies.openingText}</h5>
+            <h4>{movies.releaseDate}</h4>
+          </li>
+        ))}
+      </ul>
+    );
   }
-
   if (error) content = <p>{error}</p>;
-  if (isLoading) content = <p>Loading...</p>
+  if (isLoading) content = <p>Loading...</p>;
 
   return (
     <div>
@@ -89,7 +91,11 @@ const HomePage = () => {
         <h1>Movies</h1>
         <button onClick={fetchMoviesHandler}>Get Movies</button>
         <div>{content}</div>
-        {error && retry && <div><button onClick={cancelRetryingHandler}>Cancel Retrying</button></div>}
+        {error && retry && (
+          <div>
+            <button onClick={cancelRetryingHandler}>Cancel Retrying</button>
+          </div>
+        )}
       </div>
     </div>
   );
