@@ -26,7 +26,6 @@ function App() {
         <CartContextProvider>
           {cartIsOpen && <Cart onClose={cartCloseHandler} />}
           <Store onCartClick={cartClickHandler} />
-          <Footer />
         </CartContextProvider>
       </Route>  
       <Route path="/home">
@@ -35,6 +34,7 @@ function App() {
       <Route path="/about">
         <AboutPage />
       </Route>
+      <Footer />
     </Fragment>
   );
 }
