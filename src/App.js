@@ -1,4 +1,4 @@
-import { Route } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import { Fragment, useState } from "react";
 import "./App.css";
 import Footer from "./components/Footer";
@@ -9,6 +9,7 @@ import CartContextProvider from "./components/Store/CartContextProvider";
 import AboutPage from "./components/AboutPage";
 import HomePage from "./components/HomePage";
 import ContactUs from "./components/ContactUsPage";
+import ProductDetails from "./components/ProductDetails";
 
 function App() {
   const [cartIsOpen, setCartIsOpen] = useState(false);
@@ -23,21 +24,26 @@ function App() {
   return (
     <Fragment>
       <Header onCartClick={cartClickHandler} />
-      <Route path="/store">
-        <CartContextProvider>
-          {cartIsOpen && <Cart onClose={cartCloseHandler} />}
-          <Store onCartClick={cartClickHandler} />
-        </CartContextProvider>
-      </Route>
-      <Route path="/home">
-        <HomePage />
-      </Route>
-      <Route path="/about">
-        <AboutPage />
-      </Route>
-      <Route path="/contact">
-        <ContactUs />
-      </Route>
+      <Switch>
+        <Route path="/store" exact>
+          <CartContextProvider>
+            {cartIsOpen && <Cart onClose={cartCloseHandler} />}
+            <Store onCartClick={cartClickHandler} />
+          </CartContextProvider>
+        </Route>
+        <Route path="/home" exact>
+          <HomePage />
+        </Route>
+        <Route path="/about" exact>
+          <AboutPage />
+        </Route>
+        <Route path="/contact" exact>
+          <ContactUs />
+        </Route>
+        <Route path="/store/product-details/:productId" exact>
+          <ProductDetails />
+        </Route>
+      </Switch>
       <Footer />
     </Fragment>
   );
