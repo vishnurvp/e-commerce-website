@@ -8,6 +8,7 @@ import Cart from "./components/Cart/Cart";
 import CartContextProvider from "./components/Store/CartContextProvider";
 import AboutPage from "./components/AboutPage";
 import HomePage from "./components/HomePage";
+import ContactUs from "./components/ContactUsPage";
 
 function App() {
   const [cartIsOpen, setCartIsOpen] = useState(false);
@@ -27,12 +28,15 @@ function App() {
           {cartIsOpen && <Cart onClose={cartCloseHandler} />}
           <Store onCartClick={cartClickHandler} />
         </CartContextProvider>
-      </Route>  
+      </Route>
       <Route path="/home">
         <HomePage />
       </Route>
       <Route path="/about">
         <AboutPage />
+      </Route>
+      <Route path="/contact">
+        <ContactUs />
       </Route>
       <Footer />
     </Fragment>
