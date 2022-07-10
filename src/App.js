@@ -1,35 +1,39 @@
 import { Route, Switch } from "react-router-dom";
-import { Fragment, useState } from "react";
-import "./App.css";
-import Footer from "./components/Footer";
-import Header from "./components/Header";
+import { useContext } from "react";
+import classes from "./App.module.css";
 import Store from "./components/Store";
-import Cart from "./components/Cart/Cart";
 import CartContextProvider from "./components/Store/CartContextProvider";
 import AboutPage from "./components/AboutPage";
 import HomePage from "./components/HomePage";
 import ContactUs from "./components/ContactUsPage";
 import ProductDetails from "./components/ProductDetails";
+import AuthForm from "./components/Auth/AuthForm";
+import AuthContext from "./components/Store/Auth-Context";
+import Layout from "./components/Layout/Layout";
 
 function App() {
-  const [cartIsOpen, setCartIsOpen] = useState(false);
-
-  const cartClickHandler = () => {
-    setCartIsOpen(true);
-  };
-  const cartCloseHandler = () => {
-    setCartIsOpen(false);
-  };
+  const authCtx = useContext(AuthContext);
 
   return (
-    <Fragment>
-      <Header onCartClick={cartClickHandler} />
+    <Layout>
       <Switch>
+        <Route path="/" exact>
+          <h1 className={classes.welcome}>Welcome</h1>
+        </Route>
+        <Route path="/login" exact>
+          {!authCtx.isLoggedIn && <AuthForm />}
+        </Route>
+        <Route path="/user" exact>
+          {authCtx.isLoggedIn && (
+            <h1 className={classes.loggedIn}>You are logged In</h1>
+          )}
+        </Route>
         <Route path="/store" exact>
-          <CartContextProvider>
-            {cartIsOpen && <Cart onClose={cartCloseHandler} />}
-            <Store onCartClick={cartClickHandler} />
-          </CartContextProvider>
+          {authCtx.isLoggedIn && (
+            <CartContextProvider>
+              <Store />
+            </CartContextProvider>
+          )}
         </Route>
         <Route path="/home" exact>
           <HomePage />
@@ -44,8 +48,7 @@ function App() {
           <ProductDetails />
         </Route>
       </Switch>
-      <Footer />
-    </Fragment>
+    </Layout>
   );
 }
 

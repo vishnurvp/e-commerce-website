@@ -3,6 +3,7 @@ import CartContext from "./Cart-Context";
 
 const CartContextProvider = (props) => {
   const [cartItems, setCartItems] = useState([]);
+  const [cartIsopen, setCartIsOpen] = useState(false);
 
   const addItemToCartHandler = (item) => {
     // find the object in the cartItems array witch is similar to this item
@@ -24,10 +25,26 @@ const CartContextProvider = (props) => {
   const removeItemFromCartHandler = (itemId) => {
     setCartItems((olditems) => olditems.filter((item) => item.id !== itemId));
   };
+
+  const removeAllFromCartHandler = () => {
+    setCartItems([]);
+  }
+
+  const openCartHandler = () => {
+    setCartIsOpen(true);
+  }
+  const closeCartHandler = ()=>{
+    setCartIsOpen(false);
+  }
+  
   const cartContext = {
     items: cartItems,
     addItem: addItemToCartHandler,
     removeItem: removeItemFromCartHandler,
+    emptyCart: removeAllFromCartHandler,
+    openCart: openCartHandler,
+    closeCart: closeCartHandler,
+    isCartOpen: cartIsopen,
   };
 
   return (

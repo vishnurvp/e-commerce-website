@@ -3,7 +3,7 @@ import classes from "./Store.module.css";
 import CartContext from "./Store/Cart-Context";
 import Button from "./UI/Button";
 import { Link } from "react-router-dom";
-
+import Cart from "./Cart/Cart";
 
 const productsArr = [
   {
@@ -37,12 +37,17 @@ const productsArr = [
 ];
 
 const Store = (props) => {
+
   const cartCtx = useContext(CartContext);
 
   const addToCartClickHandler = (event) => {
     const itemId = event.target.id;
     cartCtx.addItem(productsArr.filter((item) => item.id === itemId)[0]);
   };
+
+  const cartOpenHandler = () => {
+    cartCtx.openCart();
+  }
 
   const itemList = productsArr.map((item) => {
     return (
@@ -60,16 +65,25 @@ const Store = (props) => {
   });
 
   return (
-    <Fragment>
       <Fragment>
+        {cartCtx.isCartOpen && <Cart/>}
         <p className={classes.heading}>The Generics</p>
         <ul>{itemList}</ul>
         <div className={classes.seeCartBtn}>
-          <Button onClick={props.onCartClick}>see the cart</Button>
+          <Button onClick={cartOpenHandler}>see the cart</Button>
+        </div>
+        <div className={classes.cart}>
+          <Button onClick={cartOpenHandler}>Cart</Button>
+          <div className={classes.cartItemsNum}>{cartCtx.items.reduce((p,c)=>p+c.quantity,0)}</div>
         </div>
       </Fragment>
-    </Fragment>
   );
 };
 
 export default Store;
+
+
+// Notes
+// var arr = [{x:1}, {x:2}, {x:4}];
+// var result = arr.reduce(function (acc, obj) { return acc + obj.x; }, 0);
+// console.log(result);  // 7

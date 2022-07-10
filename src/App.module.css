@@ -13,6 +13,18 @@
   }
 }
 
+.welcome {
+  text-align: center;
+  font-size: 60px;
+  font-weight: bold;
+  color: rgb(117, 145, 244);
+}
+
+.loggedIn {
+  text-align: center;
+  font-size: 50px;
+  font-weight: Bold;
+}
 .App-header {
   background-color: #282c34;
   min-height: 100vh;

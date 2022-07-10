@@ -1,11 +1,18 @@
 import React, { Fragment, useContext } from "react";
-import Button from "./UI/Button";
 import classes from "./Header.module.css";
-import CartContext from "./Store/Cart-Context";
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
+import AuthContext from "./Store/Auth-Context";
+import { useHistory } from "react-router-dom";
 
 const Header = (props) => {
-  const cartCtx = useContext(CartContext);
+  const authCtx = useContext(AuthContext);
+  const history = useHistory();
+
+  const logoutHandler =()=>{
+    authCtx.logout();
+    history.replace('/login');
+    
+  }
   return (
     <Fragment>
       <div className={classes.banner}>
@@ -30,10 +37,17 @@ const Header = (props) => {
               Contact Us
             </NavLink>
           </div>
-        </div>
-        <div className={classes.cartCase}>
-          <Button onClick={props.onCartClick}>Cart</Button>
-          <div className={classes.cartItemsNum}>{cartCtx.items.length}</div>
+          <div>
+            {authCtx.isLoggedIn && <Link to={'/user'}>Your Profile</Link>}
+          </div>
+          <div>
+            {!authCtx.isLoggedIn && <NavLink activeClassName={classes.active} to={"/login"}>
+              Log in
+            </NavLink>}
+            {authCtx.isLoggedIn && <Link to={"/"}>
+              <button onClick={logoutHandler}>Log Out</button>
+            </Link>}
+          </div>
         </div>
       </div>
     </Fragment>
