@@ -4,9 +4,10 @@ const CartContext = React.createContext({
   items: [],
   addItem: (item) => {},
   removeItem: (id) => {},
-  emptyCart: ()=>{},
-  openCart: ()=>{},
-  closeCart: ()=>{},
+  emptyCart: () => {},
+  loadItems: () => {},
+  openCart: () => {},
+  closeCart: () => {},
   isCartOpen: false,
 });
 

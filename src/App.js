@@ -2,7 +2,6 @@ import { Redirect, Route, Switch } from "react-router-dom";
 import { useContext } from "react";
 import classes from "./App.module.css";
 import Store from "./components/Store";
-import CartContextProvider from "./components/Store/CartContextProvider";
 import AboutPage from "./components/AboutPage";
 import HomePage from "./components/HomePage";
 import ContactUs from "./components/ContactUsPage";
@@ -29,12 +28,8 @@ function App() {
           )}
         </Route>
         <Route path="/store" exact>
-          {authCtx.isLoggedIn && (
-            <CartContextProvider>
-              <Store />
-            </CartContextProvider>
-          )}
-          {!authCtx.isLoggedIn && <Redirect to='/login'></Redirect>}
+          {authCtx.isLoggedIn && <Store />}
+          {!authCtx.isLoggedIn && <Redirect to="/login"></Redirect>}
         </Route>
         <Route path="/home" exact>
           <HomePage />

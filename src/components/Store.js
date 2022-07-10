@@ -4,6 +4,7 @@ import CartContext from "./Store/Cart-Context";
 import Button from "./UI/Button";
 import { Link } from "react-router-dom";
 import Cart from "./Cart/Cart";
+import AuthContext from "./Store/Auth-Context";
 
 const productsArr = [
   {
@@ -37,24 +38,28 @@ const productsArr = [
 ];
 
 const Store = (props) => {
-
   const cartCtx = useContext(CartContext);
+  const authCtx = useContext(AuthContext);
+  const cleanEmail = authCtx.email.replace(/[^a-zA-Z0-9]/g, "");
 
   const addToCartClickHandler = (event) => {
     const itemId = event.target.id;
-    cartCtx.addItem(productsArr.filter((item) => item.id === itemId)[0]);
+    const item = productsArr.filter((item) => item.id === itemId)[0]
+    cartCtx.addItem(item);
+    postToCrudCrud(item);
   };
 
   const cartOpenHandler = () => {
     cartCtx.openCart();
-  }
+    getFromCrudCrud();
+  };
 
   const itemList = productsArr.map((item) => {
     return (
       <li className={classes.product} key={item.id}>
         <h1>{item.title}</h1>
         <Link to={`/store/product-details/${item.id}`}>
-        <img src={item.imageUrl} alt={item.title}></img>
+          <img src={item.imageUrl} alt={item.title}></img>
         </Link>
         <h2>{item.price}</h2>
         <Button id={item.id} onClick={addToCartClickHandler}>
@@ -64,24 +69,58 @@ const Store = (props) => {
     );
   });
 
+  const getFromCrudCrud = async () => {
+    const crudURL = `https://crudcrud.com/api/705891e0debd48adb2f3242ebc73c2cf/${cleanEmail}`;
+    try {
+      const response = await fetch(crudURL)
+      const data = await response.json();
+      const gotData = data.map(item=>item.items);
+      console.log(gotData);
+      cartCtx.loadItems(gotData);
+      console.log(data);
+
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const postToCrudCrud = async (item) => {
+    const crudURL = `https://crudcrud.com/api/705891e0debd48adb2f3242ebc73c2cf/${cleanEmail}`;
+    try {
+      const response = await fetch(crudURL, {
+        method: "POST",
+        body: JSON.stringify({
+          items: item,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
-      <Fragment>
-        {cartCtx.isCartOpen && <Cart/>}
-        <p className={classes.heading}>The Generics</p>
-        <ul>{itemList}</ul>
-        <div className={classes.seeCartBtn}>
-          <Button onClick={cartOpenHandler}>see the cart</Button>
+    <Fragment>
+      {cartCtx.isCartOpen && <Cart />}
+      <p className={classes.heading}>The Generics</p>
+      <ul>{itemList}</ul>
+      <div className={classes.seeCartBtn}>
+        <Button onClick={cartOpenHandler}>see the cart</Button>
+      </div>
+      <div className={classes.cart}>
+        <Button onClick={cartOpenHandler}>Cart</Button>
+        <div className={classes.cartItemsNum}>
+          {cartCtx.items.reduce((p, c) => p + c.quantity, 0)}
         </div>
-        <div className={classes.cart}>
-          <Button onClick={cartOpenHandler}>Cart</Button>
-          <div className={classes.cartItemsNum}>{cartCtx.items.reduce((p,c)=>p+c.quantity,0)}</div>
-        </div>
-      </Fragment>
+      </div>
+    </Fragment>
   );
 };
 
 export default Store;
-
 
 // Notes
 // var arr = [{x:1}, {x:2}, {x:4}];

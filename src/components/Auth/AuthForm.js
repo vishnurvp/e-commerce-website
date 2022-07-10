@@ -41,6 +41,7 @@ const AuthForm = () => {
       if (response.ok) {
         const data = await response.json();
         authCtx.login(data.idToken);
+        authCtx.setEmail(data.email);
         history.replace("/store");
       } else {
         const data = await response.json();
