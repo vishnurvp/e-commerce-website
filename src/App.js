@@ -1,4 +1,4 @@
-import { Route, Switch } from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
 import { useContext } from "react";
 import classes from "./App.module.css";
 import Store from "./components/Store";
@@ -34,6 +34,7 @@ function App() {
               <Store />
             </CartContextProvider>
           )}
+          {!authCtx.isLoggedIn && <Redirect to='/login'></Redirect>}
         </Route>
         <Route path="/home" exact>
           <HomePage />
