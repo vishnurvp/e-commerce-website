@@ -66,6 +66,10 @@ const AuthForm = () => {
       setIsLoading(false);
       if (response.ok) {
         // const data = await response.json();
+        // console.log(data);
+        alert('Signup Sucessfull');
+        setIsLogin(true);
+        // const data = await response.json();
       } else {
         const data = await response.json();
         const generalError = "Authentication failed";
@@ -74,6 +78,8 @@ const AuthForm = () => {
         else alert(generalError);
       }
     }
+    emailInputRef.current.value = '';
+    passwordInputRef.current.value = '';
   };
 
   return (

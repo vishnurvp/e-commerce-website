@@ -44,14 +44,14 @@ const Store = (props) => {
 
   const addToCartClickHandler = (event) => {
     const itemId = event.target.id;
-    const item = productsArr.filter((item) => item.id === itemId)[0]
-    cartCtx.addItem(item);
+    const item = productsArr.filter((item) => item.id === itemId)[0];
     postToCrudCrud(item);
+    cartCtx.addItem(item);
   };
 
   const cartOpenHandler = () => {
     cartCtx.openCart();
-    getFromCrudCrud();
+    // getFromCrudCrud();
   };
 
   const itemList = productsArr.map((item) => {
@@ -69,23 +69,23 @@ const Store = (props) => {
     );
   });
 
-  const getFromCrudCrud = async () => {
-    const crudURL = `https://crudcrud.com/api/705891e0debd48adb2f3242ebc73c2cf/${cleanEmail}`;
-    try {
-      const response = await fetch(crudURL)
-      const data = await response.json();
-      const gotData = data.map(item=>item.items);
-      console.log(gotData);
-      cartCtx.loadItems(gotData);
-      console.log(data);
+  // const getFromCrudCrud = async () => {
+  //   const crudURL = `https://crudcrud.com/api/040e61dac04a4a0c9fd7a5f0d35e2464/${cleanEmail}`;
+  //   try {
+  //     const response = await fetch(crudURL)
+  //     const data = await response.json();
 
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  //     const gotData = data.map(item=>item.items);
+  //     // console.log(gotData);
+  //     cartCtx.loadItems(gotData);
+  //     console.log(data);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
 
   const postToCrudCrud = async (item) => {
-    const crudURL = `https://crudcrud.com/api/705891e0debd48adb2f3242ebc73c2cf/${cleanEmail}`;
+    const crudURL = `https://crudcrud.com/api/fdba877d8bc54eb6b9ef6bdd15405b1f/${cleanEmail}`;
     try {
       const response = await fetch(crudURL, {
         method: "POST",
@@ -96,7 +96,8 @@ const Store = (props) => {
           "Content-Type": "application/json",
         },
       });
-      console.log(response);
+      const data = await response.json();
+      console.log(data);
     } catch (error) {
       console.log(error);
     }
