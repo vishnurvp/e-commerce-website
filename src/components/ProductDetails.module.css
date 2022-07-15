@@ -1,0 +1,18 @@
+.zoomImageDiv {
+overflow: scroll;
+  width: 60vw;
+  height: 40vw;
+  position: absolute;
+  left: 21vw;
+  top: 10vw;
+  background-color: aquamarine;
+  z-index: 2;
+}
+
+.zoomedImage {
+    width: 100%;
+}
+
+.image {
+  width: 20vw;
+}
