@@ -2,8 +2,10 @@ import React, { Fragment, useContext } from "react";
 import CartContext from "../Store/Cart-Context";
 import Button from "../UI/Button";
 import classes from "./Cart.module.css";
+import AuthContext from "../Store/Auth-Context";
 
 const Cart = (props) => {
+  const authCtx = useContext(AuthContext);
   const cartCtx = useContext(CartContext);
   const removeProductHandler = (event) => {
     const itemId = event.target.id;
@@ -12,6 +14,14 @@ const Cart = (props) => {
 
   const purchaseClickHandler = () => {
     cartCtx.emptyCart();
+    const itemIds = cartCtx.ids;
+    itemIds.forEach(item_id=>{
+      const cleanEmail = authCtx.email.replace(/[^a-zA-Z0-9]/g, "");
+      fetch(`https://crudcrud.com/api/82abaedbf68845608f4e803627847461/${cleanEmail}/${item_id}`, {
+        method: 'DELETE'
+      }).then(cartCtx.removeCrudIds(item_id));
+    });
+    
     alert("Thank you for shoping with us");
   };
 

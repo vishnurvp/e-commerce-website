@@ -85,7 +85,7 @@ const Store = (props) => {
   // }
 
   const postToCrudCrud = async (item) => {
-    const crudURL = `https://crudcrud.com/api/fdba877d8bc54eb6b9ef6bdd15405b1f/${cleanEmail}`;
+    const crudURL = `https://crudcrud.com/api/82abaedbf68845608f4e803627847461/${cleanEmail}`;
     try {
       const response = await fetch(crudURL, {
         method: "POST",
@@ -97,7 +97,8 @@ const Store = (props) => {
         },
       });
       const data = await response.json();
-      console.log(data);
+      cartCtx.addCrudId(data._id);
+      console.log(data._id);
     } catch (error) {
       console.log(error);
     }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { Suspense, useContext } from "react";
 import classes from "./App.module.css";
@@ -30,7 +30,10 @@ function App() {
           </Route>
           <Route path="/user" exact>
             {authCtx.isLoggedIn && (
+              <Fragment>
               <h1 className={classes.loggedIn}>You are logged In</h1>
+              <h2 className={classes.loggedIn}>Your email: {authCtx.email}</h2>
+              </Fragment>
             )}
           </Route>
           <Route path="/store" exact>
