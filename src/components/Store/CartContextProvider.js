@@ -6,7 +6,6 @@ const CartContextProvider = (props) => {
   const [cartItems, setCartItems] = useState([]);
   const [cartIsopen, setCartIsOpen] = useState(false);
   const authCtx = useContext(AuthContext);
-  const cleanEmail = authCtx.email.replace(/[^a-zA-Z0-9]/g, "");
 
   const addItemToCartHandler = async (item) => {
     // find the object in the cartItems array witch is similar to this item
@@ -21,6 +20,7 @@ const CartContextProvider = (props) => {
     // } else {
     //   setCartItems((olditems) => [...olditems, item]);
     // }
+    const cleanEmail = authCtx.email.replace(/[^a-zA-Z0-9]/g, "");
     const crudURL = `https://crudcrud.com/api/fdba877d8bc54eb6b9ef6bdd15405b1f/${cleanEmail}`;
     try {
       const response = await fetch(crudURL)
